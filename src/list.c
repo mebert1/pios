@@ -21,4 +21,15 @@ int list_add(int data) {
 	
 	return 0;
 }
+
+// removes last element from list
+int list_remove(void) {
+	struct Node* prev = head;
+	while(current->next != NULL) {
+		prev = current;
+		current = current->next;
+	}
+	prev->next = NULL;
+	return 0;
+}
 	
