@@ -1,20 +1,20 @@
 #include <stdlib.h>
 #include "list.h"
 
-struct Node* head = NULL;
-struct Node* current; 
+char memory_block[sizeof(node_t)];
+node_t* head = NULL;
+node_t* current;
 
 int list_add(int data) {
-	// init call to create head (Null element)
-	if (head == NULL) {
-		//head = (struct Node*) malloc(sizeof(struct Node));
+
+	if(head == NULL) {
+		head = (node_t*) memory_block;
 		current = head;
 	}
 
-	struct Node* new_node = NULL; // = (struct Node*) malloc(sizeof(struct Node));
-	//if(new_node == NULL) {
-	//	return 1;
-	//}
+	char new_mem_block[sizeof(node_t)];
+	node_t* new_node = (node_t*) new_mem_block;
+
 	new_node->value = data;
 	current->next = new_node;
 	current = new_node;
@@ -24,7 +24,7 @@ int list_add(int data) {
 
 // removes last element from list
 int list_remove(void) {
-	struct Node* prev = head;
+	node_t* prev = head;
 	while(current->next != NULL) {
 		prev = current;
 		current = current->next;
