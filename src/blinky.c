@@ -6,24 +6,18 @@
 
 void led_init(void) {
 	uint32_t *gpsel4 = (uint32_t *) 0xFE200010;
-	uint32_t *gpset1 = (uint32_t *) 0xFE200020;
-	uint32_t *gpclr1 = (uint32_t *) 0xFE20002C;
 
 	*gpsel4 &= NOT_BITS_6_TO_8;
 	*gpsel4 |= BIT_6;
 }
 
 void led_on(void) {
-	uint32_t *gpsel4 = (uint32_t *) 0xFE200010;
 	uint32_t *gpset1 = (uint32_t *) 0xFE200020;
-	uint32_t *gpclr1 = (uint32_t *) 0xFE20002C;
 
 	*gpset1 |= BIT_10;
 }
 
 void led_off(void) {
-	uint32_t *gpsel4 = (uint32_t *) 0xFE200010;
-	uint32_t *gpset1 = (uint32_t *) 0xFE200020;
 	uint32_t *gpclr1 = (uint32_t *) 0xFE20002C;
 
 	*gpclr1 |= BIT_10;
