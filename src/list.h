@@ -1,5 +1,11 @@
-typedef struct Node {
-	int value;
-	struct Node * next;
-	struct Node * prev;
-} node_t;
+#ifndef __LIST_H
+#define __LIST_H
+
+struct listElement {
+    struct listElement *next;
+    struct listElement *prev;
+};
+
+void listAdd(struct listElement **head, struct listElement *newElement);
+void listRemove(struct listElement *b);
+#endif

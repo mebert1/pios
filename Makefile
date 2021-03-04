@@ -19,6 +19,7 @@ OBJS = \
 	blinky.o \
 	serial.o \
 	rprintf.o \
+	page.o \
 
 
 

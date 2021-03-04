@@ -1,35 +1,47 @@
-#include <stdlib.h>
+
+#include <stddef.h>
 #include "list.h"
 
-char memory_block[sizeof(node_t)];
-node_t* head = NULL;
-node_t* current;
 
-int list_add(int data) {
+/*
+ * listAdd
+ *
+ * Adds newElement to a linked list pointed to by list. When calling this function, pass the address of list head.
+ *
+ */
+void listAdd(struct listElement **head, struct listElement *newElement){
+    struct listElement *iterator = (struct listElement*)head ;
 
-	if(head == NULL) {
-		head = (node_t*) memory_block;
-		current = head;
-	}
+    // Link element b into the list between iterator and iterator->next.
+    newElement->next = iterator->next ;
+    newElement->prev = iterator ;
 
-	char new_mem_block[sizeof(node_t)];
-	node_t* new_node = (node_t*) new_mem_block;
+    iterator->next = newElement ;
+    
+    if(newElement->next != NULL){
+        newElement->next->prev = newElement ;
+    }
+}
 
-	new_node->value = data;
-	current->next = new_node;
-	current = new_node;
+
+/*
+ * listDelete
+ *
+ * Deletes an element from a doubly linked list.
+ */
+void listRemove(struct listElement *b)
+{
+	if(b->next != NULL)
+		b->next->prev = b->prev ;
 	
-	return 0;
+	b->prev->next = b->next ;
+
+	// NULLify the element's next and prev pointers to indicate
+	// that it is not linked into a list.
+	b->next = NULL ;
+	b->prev = NULL ;
 }
 
-// removes last element from list
-int list_remove(void) {
-	node_t* prev = head;
-	while(current->next != NULL) {
-		prev = current;
-		current = current->next;
-	}
-	prev->next = NULL;
-	return 0;
-}
+
+
 	
