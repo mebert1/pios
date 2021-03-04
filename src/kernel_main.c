@@ -1,11 +1,13 @@
 #include "serial.h"
 #include "rprintf.h"
 #include <stdint.h>
+#include "page.h"
 
 
 extern int __bss_start;
 extern int __bss_end;
 extern int __bss_size;
+extern struct ppage* free_list;
 
 void blink(unsigned int delay_s);
 void led_init();
@@ -23,14 +25,22 @@ void clear_bss(void) {
 void kernel_main() {
 
 	// clear BBS segment of pi
-	// clear_bss();
+	clear_bss();
 
-	// initialize green LED and turn it on
-	// led_init();
-	// led_on();
-
-	// send String to serial port
-	esp_printf((void *)putc, "ApplePi says Hi");
+	// Print string to greet user
+	esp_printf((void *)putc, "ApplePi says Hi\n");
 	
+	init_pfa_list();
+	struct ppage *test = free_list->next;
+	test = test->next;
+	esp_printf((void *)putc, "Physical addr: %x\n", test->physical_addr);
+
+	test = allocate_physical_pages(2);
+	esp_printf((void *)putc, "Allocated addr: %x\n", test->physical_addr);
+	test = allocate_physical_pages(2);
+	esp_printf((void *)putc, "Allocated addr: %x\n", test->physical_addr);
+	free_physical_pages(test);
+	esp_printf((void *)putc, "Addr after free: %x\n", test->physical_addr);
+
 	while(1) {}
 }
